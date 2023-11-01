@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class primera : Migration
+    public partial class o : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -126,10 +126,22 @@ namespace DAL.Migrations
                 {
                     table.PrimaryKey("PK_Libros", x => x.id_libro);
                     table.ForeignKey(
+                        name: "FK_Libros_Colecciones_id_coleccion",
+                        column: x => x.id_coleccion,
+                        principalTable: "Colecciones",
+                        principalColumn: "id_colecciones",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Libros_Editoriales_id_editorial",
                         column: x => x.id_editorial,
                         principalTable: "Editoriales",
                         principalColumn: "id_editoriales",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Libros_Generos_id_genero",
+                        column: x => x.id_genero,
+                        principalTable: "Generos",
+                        principalColumn: "id_genero",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -170,31 +182,39 @@ namespace DAL.Migrations
                     id_rel_autores_libros = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     id_autor = table.Column<int>(type: "integer", nullable: false),
-                    id_libro = table.Column<int>(type: "integer", nullable: false),
-                    autoresid_autor = table.Column<int>(type: "integer", nullable: false),
-                    librosid_libro = table.Column<int>(type: "integer", nullable: false)
+                    id_libro = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Rel_Autores_Libros", x => x.id_rel_autores_libros);
                     table.ForeignKey(
-                        name: "FK_Rel_Autores_Libros_Autores_autoresid_autor",
-                        column: x => x.autoresid_autor,
+                        name: "FK_Rel_Autores_Libros_Autores_id_autor",
+                        column: x => x.id_autor,
                         principalTable: "Autores",
                         principalColumn: "id_autor",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Rel_Autores_Libros_Libros_librosid_libro",
-                        column: x => x.librosid_libro,
+                        name: "FK_Rel_Autores_Libros_Libros_id_libro",
+                        column: x => x.id_libro,
                         principalTable: "Libros",
                         principalColumn: "id_libro",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Libros_id_coleccion",
+                table: "Libros",
+                column: "id_coleccion");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Libros_id_editorial",
                 table: "Libros",
                 column: "id_editorial");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Libros_id_genero",
+                table: "Libros",
+                column: "id_genero");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Prestamos_id_libro",
@@ -207,14 +227,14 @@ namespace DAL.Migrations
                 column: "id_usuario");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rel_Autores_Libros_autoresid_autor",
+                name: "IX_Rel_Autores_Libros_id_autor",
                 table: "Rel_Autores_Libros",
-                column: "autoresid_autor");
+                column: "id_autor");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rel_Autores_Libros_librosid_libro",
+                name: "IX_Rel_Autores_Libros_id_libro",
                 table: "Rel_Autores_Libros",
-                column: "librosid_libro");
+                column: "id_libro");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_id_acceso",
@@ -225,12 +245,6 @@ namespace DAL.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Colecciones");
-
-            migrationBuilder.DropTable(
-                name: "Generos");
-
             migrationBuilder.DropTable(
                 name: "Prestamos");
 
@@ -250,7 +264,13 @@ namespace DAL.Migrations
                 name: "Accesos");
 
             migrationBuilder.DropTable(
+                name: "Colecciones");
+
+            migrationBuilder.DropTable(
                 name: "Editoriales");
+
+            migrationBuilder.DropTable(
+                name: "Generos");
         }
     }
 }

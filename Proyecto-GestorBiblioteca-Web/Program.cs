@@ -12,11 +12,11 @@ builder.Services.AddDbContext<gestorBibliotecaDbContext>(
 var app = builder.Build();
 
 
-using (var scope = app.Services.CreateScope())
+/*using (var scope = app.Services.CreateScope())
 {
     var appDBContext = scope.ServiceProvider.GetRequiredService<gestorBibliotecaDbContext>();
     appDBContext.Database.Migrate();
-}
+}*/
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

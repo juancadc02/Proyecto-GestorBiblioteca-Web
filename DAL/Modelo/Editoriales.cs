@@ -10,6 +10,9 @@ namespace DAL.Modelo
 {
     public class Editoriales
     {
+        
+
+       
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id_editoriales {  get; set; }
@@ -18,5 +21,18 @@ namespace DAL.Modelo
         // Propiedad de navegación para la relación con Libros
         public ICollection<Libros> Libros { get; set; }
 
+        public Editoriales(string nombre_editorial)
+        {
+            this.nombre_editorial = nombre_editorial;
+        }
+        public Editoriales()
+        {
+            
+        }
+
+        public Editoriales(int id_editoriales)
+        {
+            this.id_editoriales = id_editoriales;
+        }
     }
 }

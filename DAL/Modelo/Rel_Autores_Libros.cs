@@ -14,9 +14,9 @@ namespace DAL.Modelo
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id_rel_autores_libros {  get; set; }
-        [ForeignKey("id_autor")]
+        [ForeignKey("autores")]
         public int id_autor {  get; set; }
-        [ForeignKey("id_libro")]
+        [ForeignKey("libros")]
         public int id_libro { get; set; }
         
 
@@ -24,5 +24,14 @@ namespace DAL.Modelo
         public Autores autores { get; set; }
         public Libros libros { get; set; }
 
+        public Rel_Autores_Libros(int id_autor, int id_libro)
+        {
+            this.id_autor = id_autor;
+            this.id_libro = id_libro;
+        }
+
+        public Rel_Autores_Libros()
+        {
+        }
     }
 }

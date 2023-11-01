@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     [DbContext(typeof(gestorBibliotecaDbContext))]
-    [Migration("20231026123646_primera")]
-    partial class primera
+    [Migration("20231101224129_o")]
+    partial class o
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,7 +153,11 @@ namespace DAL.Migrations
 
                     b.HasKey("id_libro");
 
+                    b.HasIndex("id_coleccion");
+
                     b.HasIndex("id_editorial");
+
+                    b.HasIndex("id_genero");
 
                     b.ToTable("Libros");
                 });
@@ -201,23 +205,17 @@ namespace DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id_rel_autores_libros"));
 
-                    b.Property<int>("autoresid_autor")
-                        .HasColumnType("integer");
-
                     b.Property<int>("id_autor")
                         .HasColumnType("integer");
 
                     b.Property<int>("id_libro")
                         .HasColumnType("integer");
 
-                    b.Property<int>("librosid_libro")
-                        .HasColumnType("integer");
-
                     b.HasKey("id_rel_autores_libros");
 
-                    b.HasIndex("autoresid_autor");
+                    b.HasIndex("id_autor");
 
-                    b.HasIndex("librosid_libro");
+                    b.HasIndex("id_libro");
 
                     b.ToTable("Rel_Autores_Libros");
                 });
@@ -278,13 +276,29 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Modelo.Libros", b =>
                 {
-                    b.HasOne("DAL.Modelo.Editoriales", "editoriales")
+                    b.HasOne("DAL.Modelo.Colecciones", "Colecciones")
+                        .WithMany()
+                        .HasForeignKey("id_coleccion")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Modelo.Editoriales", "Editoriales")
                         .WithMany("Libros")
                         .HasForeignKey("id_editorial")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("editoriales");
+                    b.HasOne("DAL.Modelo.Generos", "Generos")
+                        .WithMany()
+                        .HasForeignKey("id_genero")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Colecciones");
+
+                    b.Navigation("Editoriales");
+
+                    b.Navigation("Generos");
                 });
 
             modelBuilder.Entity("DAL.Modelo.Prestamos", b =>
@@ -310,13 +324,13 @@ namespace DAL.Migrations
                 {
                     b.HasOne("DAL.Modelo.Autores", "autores")
                         .WithMany("Rel_Autores_Libros")
-                        .HasForeignKey("autoresid_autor")
+                        .HasForeignKey("id_autor")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DAL.Modelo.Libros", "libros")
-                        .WithMany("RelacionesAutoresLibros")
-                        .HasForeignKey("librosid_libro")
+                        .WithMany()
+                        .HasForeignKey("id_libro")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -344,11 +358,6 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Modelo.Editoriales", b =>
                 {
                     b.Navigation("Libros");
-                });
-
-            modelBuilder.Entity("DAL.Modelo.Libros", b =>
-                {
-                    b.Navigation("RelacionesAutoresLibros");
                 });
 #pragma warning restore 612, 618
         }

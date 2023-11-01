@@ -21,7 +21,15 @@ namespace DAL.Modelo
         // Propiedad de navegación para la relación
         public ICollection<Rel_Autores_Libros> Rel_Autores_Libros { get; set; }
 
+        public Autores(string nombre_autor, string apellidos_autor)
+        {
+            this.nombre_autor = nombre_autor;
+            this.apellidos_autor = apellidos_autor;
+        }
 
-
+        public Autores()
+        {
+            
+        }
     }
 }
