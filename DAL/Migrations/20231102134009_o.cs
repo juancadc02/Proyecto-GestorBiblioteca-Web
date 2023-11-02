@@ -162,12 +162,6 @@ namespace DAL.Migrations
                 {
                     table.PrimaryKey("PK_Prestamos", x => x.id_prestamos);
                     table.ForeignKey(
-                        name: "FK_Prestamos_Libros_id_libro",
-                        column: x => x.id_libro,
-                        principalTable: "Libros",
-                        principalColumn: "id_libro",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Prestamos_Usuarios_id_usuario",
                         column: x => x.id_usuario,
                         principalTable: "Usuarios",
@@ -179,25 +173,47 @@ namespace DAL.Migrations
                 name: "Rel_Autores_Libros",
                 columns: table => new
                 {
-                    id_rel_autores_libros = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    id_autor = table.Column<int>(type: "integer", nullable: false),
-                    id_libro = table.Column<int>(type: "integer", nullable: false)
+                    Autoresid_autor = table.Column<int>(type: "integer", nullable: false),
+                    Librosid_libro = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rel_Autores_Libros", x => x.id_rel_autores_libros);
+                    table.PrimaryKey("PK_Rel_Autores_Libros", x => new { x.Autoresid_autor, x.Librosid_libro });
                     table.ForeignKey(
-                        name: "FK_Rel_Autores_Libros_Autores_id_autor",
-                        column: x => x.id_autor,
+                        name: "FK_Rel_Autores_Libros_Autores_Autoresid_autor",
+                        column: x => x.Autoresid_autor,
                         principalTable: "Autores",
                         principalColumn: "id_autor",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Rel_Autores_Libros_Libros_id_libro",
-                        column: x => x.id_libro,
+                        name: "FK_Rel_Autores_Libros_Libros_Librosid_libro",
+                        column: x => x.Librosid_libro,
                         principalTable: "Libros",
                         principalColumn: "id_libro",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rel_Libros_Prestamos",
+                columns: table => new
+                {
+                    Prestamosid_prestamos = table.Column<int>(type: "integer", nullable: false),
+                    collectionLibroid_libro = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rel_Libros_Prestamos", x => new { x.Prestamosid_prestamos, x.collectionLibroid_libro });
+                    table.ForeignKey(
+                        name: "FK_Rel_Libros_Prestamos_Libros_collectionLibroid_libro",
+                        column: x => x.collectionLibroid_libro,
+                        principalTable: "Libros",
+                        principalColumn: "id_libro",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Rel_Libros_Prestamos_Prestamos_Prestamosid_prestamos",
+                        column: x => x.Prestamosid_prestamos,
+                        principalTable: "Prestamos",
+                        principalColumn: "id_prestamos",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -217,24 +233,19 @@ namespace DAL.Migrations
                 column: "id_genero");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prestamos_id_libro",
-                table: "Prestamos",
-                column: "id_libro");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Prestamos_id_usuario",
                 table: "Prestamos",
                 column: "id_usuario");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rel_Autores_Libros_id_autor",
+                name: "IX_Rel_Autores_Libros_Librosid_libro",
                 table: "Rel_Autores_Libros",
-                column: "id_autor");
+                column: "Librosid_libro");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rel_Autores_Libros_id_libro",
-                table: "Rel_Autores_Libros",
-                column: "id_libro");
+                name: "IX_Rel_Libros_Prestamos_collectionLibroid_libro",
+                table: "Rel_Libros_Prestamos",
+                column: "collectionLibroid_libro");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_id_acceso",
@@ -246,13 +257,10 @@ namespace DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Prestamos");
-
-            migrationBuilder.DropTable(
                 name: "Rel_Autores_Libros");
 
             migrationBuilder.DropTable(
-                name: "Usuarios");
+                name: "Rel_Libros_Prestamos");
 
             migrationBuilder.DropTable(
                 name: "Autores");
@@ -261,7 +269,7 @@ namespace DAL.Migrations
                 name: "Libros");
 
             migrationBuilder.DropTable(
-                name: "Accesos");
+                name: "Prestamos");
 
             migrationBuilder.DropTable(
                 name: "Colecciones");
@@ -271,6 +279,12 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Generos");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");
+
+            migrationBuilder.DropTable(
+                name: "Accesos");
         }
     }
 }

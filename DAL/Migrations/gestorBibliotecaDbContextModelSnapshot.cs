@@ -22,6 +22,21 @@ namespace DAL.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("AutoresLibros", b =>
+                {
+                    b.Property<int>("Autoresid_autor")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Librosid_libro")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Autoresid_autor", "Librosid_libro");
+
+                    b.HasIndex("Librosid_libro");
+
+                    b.ToTable("Rel_Autores_Libros", (string)null);
+                });
+
             modelBuilder.Entity("DAL.Modelo.Accesos", b =>
                 {
                     b.Property<int>("id_acceso")
@@ -187,34 +202,9 @@ namespace DAL.Migrations
 
                     b.HasKey("id_prestamos");
 
-                    b.HasIndex("id_libro");
-
                     b.HasIndex("id_usuario");
 
                     b.ToTable("Prestamos");
-                });
-
-            modelBuilder.Entity("DAL.Modelo.Rel_Autores_Libros", b =>
-                {
-                    b.Property<int>("id_rel_autores_libros")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id_rel_autores_libros"));
-
-                    b.Property<int>("id_autor")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("id_libro")
-                        .HasColumnType("integer");
-
-                    b.HasKey("id_rel_autores_libros");
-
-                    b.HasIndex("id_autor");
-
-                    b.HasIndex("id_libro");
-
-                    b.ToTable("Rel_Autores_Libros");
                 });
 
             modelBuilder.Entity("DAL.Modelo.Usuarios", b =>
@@ -271,6 +261,36 @@ namespace DAL.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("LibrosPrestamos", b =>
+                {
+                    b.Property<int>("Prestamosid_prestamos")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("collectionLibroid_libro")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Prestamosid_prestamos", "collectionLibroid_libro");
+
+                    b.HasIndex("collectionLibroid_libro");
+
+                    b.ToTable("Rel_Libros_Prestamos", (string)null);
+                });
+
+            modelBuilder.Entity("AutoresLibros", b =>
+                {
+                    b.HasOne("DAL.Modelo.Autores", null)
+                        .WithMany()
+                        .HasForeignKey("Autoresid_autor")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Modelo.Libros", null)
+                        .WithMany()
+                        .HasForeignKey("Librosid_libro")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DAL.Modelo.Libros", b =>
                 {
                     b.HasOne("DAL.Modelo.Colecciones", "Colecciones")
@@ -300,40 +320,13 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Modelo.Prestamos", b =>
                 {
-                    b.HasOne("DAL.Modelo.Libros", "libro")
-                        .WithMany()
-                        .HasForeignKey("id_libro")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("DAL.Modelo.Usuarios", "usuario")
                         .WithMany()
                         .HasForeignKey("id_usuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("libro");
-
                     b.Navigation("usuario");
-                });
-
-            modelBuilder.Entity("DAL.Modelo.Rel_Autores_Libros", b =>
-                {
-                    b.HasOne("DAL.Modelo.Autores", "autores")
-                        .WithMany("Rel_Autores_Libros")
-                        .HasForeignKey("id_autor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Modelo.Libros", "libros")
-                        .WithMany()
-                        .HasForeignKey("id_libro")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("autores");
-
-                    b.Navigation("libros");
                 });
 
             modelBuilder.Entity("DAL.Modelo.Usuarios", b =>
@@ -347,9 +340,19 @@ namespace DAL.Migrations
                     b.Navigation("accesos");
                 });
 
-            modelBuilder.Entity("DAL.Modelo.Autores", b =>
+            modelBuilder.Entity("LibrosPrestamos", b =>
                 {
-                    b.Navigation("Rel_Autores_Libros");
+                    b.HasOne("DAL.Modelo.Prestamos", null)
+                        .WithMany()
+                        .HasForeignKey("Prestamosid_prestamos")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Modelo.Libros", null)
+                        .WithMany()
+                        .HasForeignKey("collectionLibroid_libro")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DAL.Modelo.Editoriales", b =>

@@ -10,6 +10,9 @@ namespace DAL.Modelo
 {
     public class Autores
     {
+        public Autores()
+        {
+        }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -18,18 +21,20 @@ namespace DAL.Modelo
         public string apellidos_autor { get; set; }
 
 
-        // Propiedad de navegación para la relación
-        public ICollection<Rel_Autores_Libros> Rel_Autores_Libros { get; set; }
+        // Definición de la colección de libros
+        public ICollection<Libros> Libros { get; set; }
+
+        public Autores(string nombre_autor, string apellidos_autor, ICollection<Libros> libros)
+        {
+            this.nombre_autor = nombre_autor;
+            this.apellidos_autor = apellidos_autor;
+            Libros = libros;
+        }
 
         public Autores(string nombre_autor, string apellidos_autor)
         {
             this.nombre_autor = nombre_autor;
             this.apellidos_autor = apellidos_autor;
-        }
-
-        public Autores()
-        {
-            
         }
     }
 }

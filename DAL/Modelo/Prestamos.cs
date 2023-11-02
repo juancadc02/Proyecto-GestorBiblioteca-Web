@@ -26,7 +26,8 @@ namespace DAL.Modelo
 
         //Propiedades tablas 
 
-        public Libros libro { get; set; }
+        public ICollection<Libros> collectionLibro { get; set; } 
+       
         public Usuarios usuario {  get; set; }
 
     }

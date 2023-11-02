@@ -32,12 +32,28 @@ namespace DAL
 
         #region CRUD LIBRO
 
-        public void insertarLibro(Libros nuevoLibro);
+        public void insertarLibro(Libros nuevoLibro,int idAutor);
         public List<Libros> listarLibros();
         public void borrarLibroPorId(int idLibro);
 
         #endregion
 
-        public void insertarRelAutoresLibros(Rel_Autores_Libros rel_autores_libros);
+        #region CRUD EDITORIALES
+        public void insertarEditorial(Editoriales nuevaEditorial);
+        public void borrarEditorialPorId(int idEditorialPorId);
+        public List<Editoriales> listarEditoriales();
+        #endregion
+
+        #region CRUD GENEROS
+        public void insertarGenero(Generos nuevoGenero);
+        public void borrarGeneroPorId(int generoId);
+        public List<Generos> listarGeneros();
+        #endregion
+
+        #region CRUD COLECCIONES
+        public void insertarColecciones(Colecciones nuevaColeccion);
+        public void eliminarColeccionPorId(int idColeccionEliminar);
+        public List<Colecciones> listaColecciones();
+        #endregion  
     }
 }

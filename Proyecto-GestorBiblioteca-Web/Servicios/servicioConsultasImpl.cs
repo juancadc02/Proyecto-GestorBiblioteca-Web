@@ -1,4 +1,5 @@
 ﻿using DAL.Modelo;
+using Microsoft.AspNetCore.Mvc.ViewFeatures.Buffers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace DAL
 {
     internal class servicioConsultasImpl : servicioConsultas
     {
+        #region CRUD AUTORES
         public void insertarAutor(Autores nuevoAutor)
         {
             using(var contexto = new gestorBibliotecaDbContext())
@@ -23,7 +25,6 @@ namespace DAL
                 Console.WriteLine("\n\n\tAutor insertado: {0},{1}",nuevoAutor.nombre_autor,nuevoAutor.apellidos_autor);
             }
         }
-
         public List<Autores> listartAutores()
         {
             using(var contexto = new gestorBibliotecaDbContext())
@@ -66,27 +67,29 @@ namespace DAL
 
 
         }
+        #endregion
 
-        public void insertarLibro(Libros nuevoLibro)
+        #region CRUD Libros
+        public void insertarLibro(Libros nuevoLibro, int idAutor)
         {
-            using(var contexto = new gestorBibliotecaDbContext())
+            using (var context = new gestorBibliotecaDbContext())
             {
-                
-                nuevoLibro = new Libros
-                {
-                    isbn_libro=nuevoLibro.isbn_libro,
-                    nombre_libro=nuevoLibro.nombre_libro,
-                    edicion_libro=nuevoLibro.edicion_libro,
-                    id_editorial=nuevoLibro.id_editorial,
-                    id_genero=nuevoLibro.id_genero,
-                    id_coleccion=nuevoLibro.id_coleccion
-                };
-                contexto.Libros.Add(nuevoLibro);
-                contexto.SaveChanges();
-            }
-           
-        }
+                //busco el id del autor
+                Autores autor = context.Autores.Find(idAutor);
 
+                if (autor != null)
+                {
+                    // Añadir el autor al libro
+                    nuevoLibro.Autores.Add(autor);
+
+                    // Agregar el libro a la base de datos
+                    context.Libros.Add(nuevoLibro);
+
+                    context.SaveChanges();
+                }
+            }
+
+        }
         public List<Libros> listarLibros()
         {
             using(var contexto = new gestorBibliotecaDbContext())
@@ -107,7 +110,6 @@ namespace DAL
                 return listaLibro;
             }
         }
-
         public void borrarLibroPorId(int idLibro)
         {
             using(var contexto = new gestorBibliotecaDbContext())
@@ -128,22 +130,183 @@ namespace DAL
 
             }
         }
+        #endregion
 
-        public void insertarRelAutoresLibros(Rel_Autores_Libros rel_autores_libros)
+        #region CRUD EDITORIAL
+        public void insertarEditorial(Editoriales nuevaEditorial)
         {
             using(var contexto = new gestorBibliotecaDbContext())
             {
-                var autor = new Autores();
-                var libros = new Libros();
-                rel_autores_libros = new Rel_Autores_Libros
+                nuevaEditorial = new Editoriales
                 {
-                    id_autor=autor.id_autor,
-                    id_libro=libros.id_libro
+                    nombre_editorial = nuevaEditorial.nombre_editorial
                 };
-                contexto.Rel_Autores_Libros.Add(rel_autores_libros);
+
+                contexto.Editoriales.Add(nuevaEditorial);
                 contexto.SaveChanges();
-                Console.WriteLine("\n\n\t Se ha añadido a la tabla Rel_Autores_Libros el idAutor{0} y el idLibro{1}",rel_autores_libros.id_autor,rel_autores_libros.id_libro);
+                Console.WriteLine("\n\n\t Nueva editorial: IdEditorio: {0} NombreEditorial:{1}",nuevaEditorial.id_editoriales,nuevaEditorial.nombre_editorial);
             }
         }
+
+        public void borrarEditorialPorId(int idEditorialPorId)
+        {
+           using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var editorialEliminarId=contexto.Editoriales.SingleOrDefault(l=>l.id_editoriales==idEditorialPorId);
+
+                if (idEditorialPorId != null)
+                {
+                    contexto.Editoriales.Remove(editorialEliminarId);
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\t Se ha eliminado la editorial: IdEditorial:{0} ",idEditorialPorId);
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\t No se ha encontrado la editorial");
+                }
+            }
+
+        }
+
+        public List<Editoriales> listarEditoriales()
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var listaEditoriales =contexto.Editoriales.ToList();
+
+                if (listaEditoriales.Count == 0)
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado ninguna editorial");
+                }
+                else
+                {
+                    foreach(var editorial in listaEditoriales)
+                    {
+                        Console.WriteLine("\n\n\t{0} {1}",editorial.id_editoriales,editorial.nombre_editorial);
+                    }
+                }
+                return listaEditoriales;
+            }
+        }
+        #endregion
+
+        #region CRUD GENERO
+        public void insertarGenero(Generos nuevoGenero)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                nuevoGenero = new Generos
+                {
+                    nombre_genero=nuevoGenero.nombre_genero,
+                    descripcion_genero=nuevoGenero.descripcion_genero
+                };
+
+                contexto.Generos.Add(nuevoGenero);
+                contexto.SaveChanges();
+                Console.WriteLine("\n\n\t Nuevo genero: IdGenero:{0} NombreGenero:{1} DescripcionGenero:{2}",nuevoGenero.id_genero,nuevoGenero.nombre_genero,nuevoGenero.descripcion_genero);
+            }
+        }
+
+        public void borrarGeneroPorId(int generoId)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var generoBorrarId = contexto.Generos.SingleOrDefault(l => l.id_genero == generoId);
+
+                if( generoBorrarId != null )
+                {
+                    contexto.Generos.Remove(generoBorrarId );
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\tSe ha borrado el genero: IdGenero:{0}",generoBorrarId);
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\t No se ha encontrado el genero");
+                }
+            }
+        }
+
+        public List<Generos> listarGeneros()
+        {
+           using(var contexto= new gestorBibliotecaDbContext())
+            {
+                var listaGenero = contexto.Generos.ToList();
+
+                if (listaGenero.Count == 0)
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado ningun dato.");
+                }
+                else
+                {
+                    foreach(var genero in listaGenero)
+                    {
+                        Console.WriteLine("\n\n\t {0} {1} {2}",genero.id_genero,genero.nombre_genero,genero.descripcion_genero);
+                    }
+                }
+                return listaGenero;
+            }
+        }
+
+        #endregion
+
+        #region CRUD COLECCIONES
+
+        public void insertarColecciones(Colecciones nuevaColeccion)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                nuevaColeccion = new Colecciones
+                {
+                    nombre_coleccion=nuevaColeccion.nombre_coleccion
+                };
+                contexto.Colecciones.Add(nuevaColeccion);
+                contexto.SaveChanges();
+                Console.WriteLine("\n\n\tNueva coleccion IdColeccion:{0} NombreColeccion:{1}",nuevaColeccion.id_colecciones,nuevaColeccion.nombre_coleccion);
+            }
+        }
+
+        public void eliminarColeccionPorId(int idColeccionEliminar)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var coleccionBorrarId=contexto.Colecciones.SingleOrDefault(l=>l.id_colecciones==idColeccionEliminar);
+
+                if (coleccionBorrarId != null)
+                {
+                    contexto.Colecciones.Remove(coleccionBorrarId);
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\t Se ha eliminado la coleccion : IdColeccion:{0}",coleccionBorrarId);
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\t No se ha encontrado la coleccion");
+                }
+            }
+        }
+
+        public List<Colecciones> listaColecciones()
+        {
+            using(var contexto=new gestorBibliotecaDbContext())
+            {
+                var listaColecciones = contexto.Colecciones.ToList();
+
+                if (listaColecciones.Count == 0)
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado ninguna coleccion");
+                }
+                else
+                {
+                    foreach(var coleccion in listaColecciones)
+                    {
+                        Console.WriteLine("\n\n\t{0} {1}",coleccion.id_colecciones,coleccion.nombre_coleccion);
+                    }
+                }
+                return listaColecciones;
+            }
+        }
+
+        #endregion
+
+
     }
 }
