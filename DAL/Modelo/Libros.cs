@@ -65,7 +65,8 @@ namespace DAL.Modelo
             this.id_coleccion = id_coleccion;
         }
 
-        public Libros(string isbn_libro, string nombre_libro, string edicion_libro, int id_editorial, int id_genero, int id_coleccion, ICollection<Autores> autores) : this(isbn_libro, nombre_libro, edicion_libro, id_editorial, id_genero, id_coleccion)
+        public Libros(string isbn_libro, string nombre_libro, string edicion_libro, int id_editorial, int id_genero, int id_coleccion, ICollection<Autores> autores) :
+            this(isbn_libro, nombre_libro, edicion_libro, id_editorial, id_genero, id_coleccion)
         {
             Autores = autores;
         }

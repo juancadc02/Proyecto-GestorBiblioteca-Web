@@ -10,15 +10,7 @@ namespace DAL.Modelo
 {
     public class Generos
     {
-        public Generos()
-        {
-        }
-
-        public Generos(string nombre_genero, string descripcion_genero)
-        {
-            this.nombre_genero = nombre_genero;
-            this.descripcion_genero = descripcion_genero;
-        }
+     
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -26,9 +18,19 @@ namespace DAL.Modelo
         public string nombre_genero { get; set; }
         public string descripcion_genero { get; set; }
 
+      
+
+        public Generos(string nombre_genero, string descripcion_genero)
+        {
+            this.nombre_genero = nombre_genero;
+            this.descripcion_genero = descripcion_genero;
+        }
         public Generos(int id_genero)
         {
             this.id_genero = id_genero;
+        }
+        public Generos()
+        {
         }
     }
 }

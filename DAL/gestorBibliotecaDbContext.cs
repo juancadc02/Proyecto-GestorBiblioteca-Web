@@ -21,8 +21,7 @@ namespace DAL
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=gestorBibliotecaC;User Id=postgres;Password=1234; SearchPath=public ");
-
+            optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=gestorBibliotecaC;User Id=postgres;Password=Juanccaaa1992; SearchPath=public");
 
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -54,6 +53,7 @@ namespace DAL
         public DbSet<Generos> Generos { get; set; }
         public DbSet<Colecciones> Colecciones { get;set; }
         public DbSet<Prestamos> Prestamos { get; set;}
+        public DbSet<Estamos_Prestamo> estamos_Prestamos { get; set; }
         public DbSet<Usuarios> Usuarios { get; set; }   
         public DbSet<Accesos> Accesos { get; set; }
 

@@ -113,6 +113,26 @@ namespace DAL.Migrations
                     b.ToTable("Editoriales");
                 });
 
+            modelBuilder.Entity("DAL.Modelo.Estamos_Prestamo", b =>
+                {
+                    b.Property<int>("id_estado_prestamo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id_estado_prestamo"));
+
+                    b.Property<int>("codigo_estado_prestamo")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("descripcion_estado_prestamo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("id_estado_prestamo");
+
+                    b.ToTable("estamos_Prestamos");
+                });
+
             modelBuilder.Entity("DAL.Modelo.Generos", b =>
                 {
                     b.Property<int>("id_genero")
@@ -201,6 +221,8 @@ namespace DAL.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("id_prestamos");
+
+                    b.HasIndex("id_estado_prestamo");
 
                     b.HasIndex("id_usuario");
 
@@ -320,11 +342,19 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Modelo.Prestamos", b =>
                 {
+                    b.HasOne("DAL.Modelo.Estamos_Prestamo", "estado")
+                        .WithMany()
+                        .HasForeignKey("id_estado_prestamo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DAL.Modelo.Usuarios", "usuario")
                         .WithMany()
                         .HasForeignKey("id_usuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("estado");
 
                     b.Navigation("usuario");
                 });

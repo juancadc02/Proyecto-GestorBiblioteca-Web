@@ -67,6 +67,25 @@ namespace DAL
 
 
         }
+        public void modificarNombreAutor(int idAutor, string nuevoNombre)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                Autores autorModificar = contexto.Autores.FirstOrDefault(a=>a.id_autor==idAutor);
+
+                if (idAutor != null)
+                {
+                    autorModificar.nombre_autor= nuevoNombre;
+                    contexto.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado el autor");
+                }
+            }
+        }
+
+
         #endregion
 
         #region CRUD Libros
@@ -306,6 +325,179 @@ namespace DAL
         }
 
         #endregion
+
+        #region CRUD PRESTAMOS
+        public void insertarPrestamos(Prestamos nuevoPrestamo,int idLibro)
+        {
+            using (var contexto = new gestorBibliotecaDbContext())
+            {
+                //Busco el id del libro para guardarlo en la tabla Rel_Libros_Prestamos
+                Libros libro = contexto.Libros.Find(idLibro);
+
+                if (libro != null)
+                {
+                    nuevoPrestamo.collectionLibro.Add(libro);
+
+                    contexto.Prestamos.Add(nuevoPrestamo);
+
+                    contexto.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado ningun libro con ese id.");
+                }
+
+            }
+        }
+
+        public void borrarPrestamoId(int idPrestamo)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var idEliminar = contexto.Prestamos.Single(l => l.id_prestamos == idPrestamo);
+
+                if (idEliminar != null)
+                {
+                    contexto.Prestamos.Remove(idEliminar);
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado ningun prestamo con id:{0}",idEliminar);
+                }
+            }
+        }
+
+        public List<Prestamos> listaPrestamos()
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var listaPrestamo = contexto.Prestamos.ToList();
+
+                if (listaPrestamo.Count == 0)
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado ningun prestamo");
+                }
+                else
+                {
+                    foreach(var prestamo in listaPrestamo)
+                    {
+                        Console.WriteLine("\n\n\t{0} {1} {2} {3} {4} {5} {6}",prestamo.id_prestamos,prestamo.id_libro,prestamo.id_usuario,prestamo.fch_inicio_prestamo,prestamo.fch_fin_prestamo,prestamo.fch_entrega_prestamo,prestamo.id_estado_prestamo);
+                    }
+                }
+                return listaPrestamo;
+            }
+        }
+
+
+        #endregion
+
+        #region CRUD ESTADO_PRESTAMO
+
+        public void insertarEstadoPrestamo(Estamos_Prestamo nuevaEstado)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                nuevaEstado = new Estamos_Prestamo
+                {
+                    codigo_estado_prestamo = nuevaEstado.codigo_estado_prestamo,
+                    descripcion_estado_prestamo=nuevaEstado.descripcion_estado_prestamo
+                };
+
+             
+                contexto.estamos_Prestamos.Add(nuevaEstado);
+                contexto.SaveChanges();
+                Console.WriteLine("\n\n\tNuevo estado_prestamo {0} {1} {2}",nuevaEstado.id_estado_prestamo,nuevaEstado.codigo_estado_prestamo,nuevaEstado.descripcion_estado_prestamo);
+            }
+        }
+
+        public void borrarEstadoPrestamoPorId(int idEstadoPrestamo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Estamos_Prestamo> listaEstadoPrestamo()
+        {
+            throw new NotImplementedException();
+        }
+
+       
+
+      
+
+        #endregion
+
+        #region CRUD USUARIO
+
+        public void insertarUsuario(Usuarios nuevoUsuario)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                nuevoUsuario = new Usuarios
+                {
+                    dni_usuario = nuevoUsuario.dni_usuario,
+                    nombre_usuario=nuevoUsuario.nombre_usuario,
+                    apellidos_usuario=nuevoUsuario.apellidos_usuario,
+                    tlf_usuario=nuevoUsuario.tlf_usuario,
+                    email_usuario=nuevoUsuario.email_usuario,
+                    clave_usuario=nuevoUsuario.clave_usuario,
+                    id_acceso=nuevoUsuario.id_acceso,
+                    estaBloqueado_usuario=nuevoUsuario.estaBloqueado_usuario,
+                    fch_fin_bloqueo_usuario=nuevoUsuario.fch_fin_bloqueo_usuario,
+                    fch_alta_usuario=nuevoUsuario.fch_alta_usuario,
+                    fch_baja_usuario=nuevoUsuario.fch_baja_usuario
+                };
+                contexto.Usuarios.Add(nuevoUsuario);
+                contexto.SaveChanges();
+                Console.WriteLine("\n\n\tNuevo usuario añadido: {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11}",nuevoUsuario.id_usuario,nuevoUsuario.dni_usuario,nuevoUsuario.nombre_usuario,nuevoUsuario.apellidos_usuario,nuevoUsuario.tlf_usuario,nuevoUsuario.email_usuario,nuevoUsuario.clave_usuario,nuevoUsuario.id_acceso,nuevoUsuario.estaBloqueado_usuario,nuevoUsuario.fch_fin_bloqueo_usuario,nuevoUsuario.fch_alta_usuario,nuevoUsuario.fch_baja_usuario);
+            }
+        }
+
+        public void borrarUsuarioPorId(int idUsuario)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Usuarios> listaUsuarios()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+
+        #region CRUD ACCESOS
+
+        public void insertarAccesos(Accesos nuevoAcceso)
+        {
+            using (var contexto = new gestorBibliotecaDbContext())
+            {
+                nuevoAcceso = new Accesos
+                {
+
+                    codigo_acceso = nuevoAcceso.codigo_acceso,
+                    descripcion_acceso=nuevoAcceso.descripcion_acceso
+                };
+                contexto.Accesos.Add(nuevoAcceso);
+                contexto.SaveChanges();
+                Console.WriteLine("\n\n\t Nuevo acceso: {0} {1} {2}",nuevoAcceso.id_acceso,nuevoAcceso.codigo_acceso,nuevoAcceso.descripcion_acceso);
+            }
+        }
+
+        public void borrarAccesoPorId(int idAcceso)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Accesos> listaAccesos()
+        {
+            throw new NotImplementedException();
+        }
+
+       
+        #endregion
+
+
+
+
 
 
     }

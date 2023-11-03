@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class o : Migration
+    public partial class de : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,6 +64,20 @@ namespace DAL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Editoriales", x => x.id_editoriales);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "estamos_Prestamos",
+                columns: table => new
+                {
+                    id_estado_prestamo = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    codigo_estado_prestamo = table.Column<int>(type: "integer", nullable: false),
+                    descripcion_estado_prestamo = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_estamos_Prestamos", x => x.id_estado_prestamo);
                 });
 
             migrationBuilder.CreateTable(
@@ -167,6 +181,12 @@ namespace DAL.Migrations
                         principalTable: "Usuarios",
                         principalColumn: "id_usuario",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Prestamos_estamos_Prestamos_id_estado_prestamo",
+                        column: x => x.id_estado_prestamo,
+                        principalTable: "estamos_Prestamos",
+                        principalColumn: "id_estado_prestamo",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -233,6 +253,11 @@ namespace DAL.Migrations
                 column: "id_genero");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Prestamos_id_estado_prestamo",
+                table: "Prestamos",
+                column: "id_estado_prestamo");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Prestamos_id_usuario",
                 table: "Prestamos",
                 column: "id_usuario");
@@ -282,6 +307,9 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
+
+            migrationBuilder.DropTable(
+                name: "estamos_Prestamos");
 
             migrationBuilder.DropTable(
                 name: "Accesos");
