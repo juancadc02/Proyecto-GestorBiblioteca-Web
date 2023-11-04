@@ -71,12 +71,31 @@ namespace DAL
         {
             using(var contexto = new gestorBibliotecaDbContext())
             {
-                Autores autorModificar = contexto.Autores.FirstOrDefault(a=>a.id_autor==idAutor);
+                var autorModificar = contexto.Autores.FirstOrDefault(a=>a.id_autor==idAutor);
 
                 if (idAutor != null)
                 {
                     autorModificar.nombre_autor= nuevoNombre;
                     contexto.SaveChanges();
+                    Console.WriteLine("\n\n\tNombre actualizado");
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado el autor");
+                }
+            }
+        }
+        public void modificarApellidosAutor(int idAutor, string nuevoApellido)
+        {
+            using (var contexto = new gestorBibliotecaDbContext())
+            {
+                var autorModificar = contexto.Autores.FirstOrDefault(a => a.id_autor == idAutor);
+
+                if (idAutor != null)
+                {
+                    autorModificar.apellidos_autor = nuevoApellido;
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\tApellido actualizado");
                 }
                 else
                 {
@@ -149,6 +168,62 @@ namespace DAL
 
             }
         }
+        public void modificarIsbnLibro(int idLibro, string nuevoIsbn)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var isbnLibroModificar = contexto.Libros.FirstOrDefault(l=>l.id_libro==idLibro);
+
+                if (isbnLibroModificar != null)
+                {
+                    isbnLibroModificar.isbn_libro = nuevoIsbn;
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\t ISBN actualizado");
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se a encontrado ningun libro con id:{0}",idLibro);
+                }
+            }
+        }
+
+        public void modificarTituloLibro(int idLibro, string nuevoTitulo)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var tituloLibroModificar = contexto.Libros.FirstOrDefault(l=>l.id_libro==idLibro);
+
+                if (tituloLibroModificar != null)
+                {
+                    tituloLibroModificar.nombre_libro = nuevoTitulo;
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\tTitulo actualizado");
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se a encontrado ningun libro con id:{0}", idLibro);
+                }
+            }
+        }
+
+        public void modificarEdicionLibro(int idLibro, string nuevaEdicion)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var edicionLibroModificar=contexto.Libros.FirstOrDefault(l=>l.id_libro== idLibro);
+
+                if (edicionLibroModificar != null)
+                {
+                    edicionLibroModificar.edicion_libro= nuevaEdicion;
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\tEdicion actualizada");
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se a encontrado ningun libro con id:{0}", idLibro);
+                }
+            }
+        }
         #endregion
 
         #region CRUD EDITORIAL
@@ -205,6 +280,25 @@ namespace DAL
                     }
                 }
                 return listaEditoriales;
+            }
+        }
+
+        public void modificarNombreEditorial(int idEditorial, string nuevoNombreEditorial)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var nombreEditorialModificar = contexto.Editoriales.FirstOrDefault(e=>e.id_editoriales==idEditorial);
+
+                if (nombreEditorialModificar != null)
+                {
+                    nombreEditorialModificar.nombre_editorial= nuevoNombreEditorial;
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\tNombre editorial actualizado");
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se a encontrado ninguna editorial con id:{0}", idEditorial);
+                }
             }
         }
         #endregion
@@ -266,6 +360,43 @@ namespace DAL
             }
         }
 
+        public void modificarNombreGenero(int idGenero, string nuevoNombreGenero)
+        {
+
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var nombreGeneroModificar = contexto.Generos.FirstOrDefault(g => g.id_genero == idGenero);
+                if (nombreGeneroModificar != null)
+                {
+                    nombreGeneroModificar.nombre_genero= nuevoNombreGenero;
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\tNombre genero actualizado");
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se a encontrado ningun genero con id:{0}", idGenero);
+                }
+            }
+        }
+        public void modificarDescripcionGenero(int idGenero, string nuevaDescripcionGenero)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var descripcionGeneroModificar = contexto.Generos.FirstOrDefault(g=>g.id_genero==idGenero);
+                if (descripcionGeneroModificar != null)
+                {
+                    descripcionGeneroModificar.descripcion_genero = nuevaDescripcionGenero;
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\tDescripcion genero actualizada");
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se a encontrado ningun genero con id:{0}", idGenero);
+                }
+            }
+        }
+
+
         #endregion
 
         #region CRUD COLECCIONES
@@ -321,6 +452,24 @@ namespace DAL
                     }
                 }
                 return listaColecciones;
+            }
+        }
+        public void modificarNombreColeccion(int idColeccion, string nuevoNombreColeccion)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var nombreColeccionModificar = contexto.Colecciones.FirstOrDefault(c=>c.id_colecciones==idColeccion);
+
+                if(nuevoNombreColeccion!=null)
+                {
+                    nombreColeccionModificar.nombre_coleccion = nuevoNombreColeccion;
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\tNombre coleccion actualizado.");
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se a encontrado ninguna coleccion con id:{0}", idColeccion);
+                }
             }
         }
 
@@ -388,6 +537,63 @@ namespace DAL
             }
         }
 
+        public void modificarFchInicioPrestamo(int idPrestamo, DateTime nuevaFechaInicioPrestamo)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var fechaInicioPrestamoModificar = contexto.Prestamos.FirstOrDefault(p=>p.id_prestamos==idPrestamo);
+
+                if (fechaInicioPrestamoModificar != null)
+                {
+                    fechaInicioPrestamoModificar.fch_inicio_prestamo = nuevaFechaInicioPrestamo.ToUniversalTime();
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\t Fecha inicio prestamo actualizada");
+
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado ningun prestamo con el id:{0}",idPrestamo);
+                }
+            }
+        }
+        public void modificarFchFinPrestamo(int idPrestamo, DateTime nuevaFchFinPrestamo)
+        {
+
+            using (var contexto = new gestorBibliotecaDbContext())
+            {
+                var fechaFinPrestamoModificar = contexto.Prestamos.FirstOrDefault(p => p.id_prestamos == idPrestamo);
+                if (fechaFinPrestamoModificar != null)
+                {
+                    fechaFinPrestamoModificar.fch_inicio_prestamo = nuevaFchFinPrestamo.ToUniversalTime();
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\t Fecha fin prestamo actualizada");
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado ningun prestamo con el id:{0}", idPrestamo);
+                }
+            }
+        }
+        public void modificarFchEntregaPrestamo(int idPrestamo, DateTime nuevaFchEntregaPrestamo)
+        {
+            using (var contexto = new gestorBibliotecaDbContext())
+            {
+                var fechaEntregaPrestamoModificar = contexto.Prestamos.FirstOrDefault(p => p.id_prestamos == idPrestamo);
+                if (fechaEntregaPrestamoModificar != null)
+                {
+                    fechaEntregaPrestamoModificar.fch_entrega_prestamo = nuevaFchEntregaPrestamo;
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\t Fecha entrega prestamo actualizada");
+
+
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado ningun prestamo con el id:{0}", idPrestamo);
+                }
+            }
+
+        }
 
         #endregion
 
@@ -412,17 +618,85 @@ namespace DAL
 
         public void borrarEstadoPrestamoPorId(int idEstadoPrestamo)
         {
-            throw new NotImplementedException();
-        }
+            using (var contexto = new gestorBibliotecaDbContext())
+            {
+                var idEstadoPrestamoBorrar = contexto.estamos_Prestamos.SingleOrDefault(e => e.id_estado_prestamo == idEstadoPrestamo);
 
+                if (idEstadoPrestamo != null)
+                {
+                    contexto.estamos_Prestamos.Remove(idEstadoPrestamoBorrar);
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\tEstado prestamo borrado {0}", idEstadoPrestamo);
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\t No se ha encontrado el idEstadoPrestamo:{0}",idEstadoPrestamo);
+                }
+            }
+        }
         public List<Estamos_Prestamo> listaEstadoPrestamo()
         {
-            throw new NotImplementedException();
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var listaEstadoPrestamo = contexto.estamos_Prestamos.ToList();
+
+                if (listaEstadoPrestamo.Count == 0)
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado ningun estadoPrestamo.");
+                }
+                else
+                {
+                    foreach(var estado in listaEstadoPrestamo)
+                    {
+                        Console.WriteLine("{0} {1} {2}",estado.id_estado_prestamo,estado.codigo_estado_prestamo,estado.descripcion_estado_prestamo);
+                    }
+                }
+
+                return listaEstadoPrestamo;
+
+            }
         }
 
-       
+        public void modificarCodigoPrestamo(int idEstadoPrestamo, int nuevocodigoEstadoPrestamo)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var codigoEstadoPrestamoModificar=contexto.estamos_Prestamos.FirstOrDefault(e=>e.id_estado_prestamo==idEstadoPrestamo);
 
-      
+                if (codigoEstadoPrestamoModificar != null)
+                {
+                    codigoEstadoPrestamoModificar.codigo_estado_prestamo = nuevocodigoEstadoPrestamo;
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\t Codigo estado prestamo actualizada");
+
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado el id del estado prestamo:{0}",idEstadoPrestamo);
+                }
+            }
+        }
+        public void modificarDescripcionEstadoPrestamo(int idEstadoPrestamo, string nuevaDescripcionEstadoPrestamo)
+        {
+            using (var contexto = new gestorBibliotecaDbContext())
+            {
+                var descripcionEstadoPrestamoModificar = contexto.estamos_Prestamos.FirstOrDefault(e => e.id_estado_prestamo == idEstadoPrestamo);
+
+                if (descripcionEstadoPrestamoModificar != null)
+                {
+                    descripcionEstadoPrestamoModificar.descripcion_estado_prestamo = nuevaDescripcionEstadoPrestamo;
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\t Descripcion estado prestamo actualizada");
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado el id del estado prestamo:{0}", idEstadoPrestamo);
+                }
+            }
+        }
+
+
+
 
         #endregion
 
@@ -454,12 +728,150 @@ namespace DAL
 
         public void borrarUsuarioPorId(int idUsuario)
         {
-            throw new NotImplementedException();
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var idUsuarioBorrar=contexto.Usuarios.SingleOrDefault(u=>u.id_usuario==idUsuario);
+                if (idUsuarioBorrar != null)
+                {
+                    contexto.Usuarios.Remove(idUsuarioBorrar);
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\tUsuario eliminado correctamente.");
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado el idUsuario:{0}",idUsuario);
+                }
+            }
         }
 
         public List<Usuarios> listaUsuarios()
         {
-            throw new NotImplementedException();
+            using(var contexto= new gestorBibliotecaDbContext())
+            {
+                var listaUsuarios=contexto.Usuarios.ToList();
+                if (listaUsuarios.Count == 0)
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado ningun usuario.");
+                }
+                else
+                {
+                    foreach(var usuarios in listaUsuarios)
+                    {
+                        Console.WriteLine("\n\n\t{0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11}", usuarios.id_usuario, usuarios.dni_usuario, usuarios.nombre_usuario, usuarios.apellidos_usuario, usuarios.tlf_usuario, usuarios.email_usuario, usuarios.clave_usuario, usuarios.id_acceso, usuarios.estaBloqueado_usuario, usuarios.fch_fin_bloqueo_usuario, usuarios.fch_alta_usuario, usuarios.fch_baja_usuario);
+                    }
+                   
+                }
+                return listaUsuarios;
+
+            }
+        }
+
+        public void modificarDniUsuario(int idUsuario, string nuevoDniUsuario)
+        {
+            using(var contexto =new gestorBibliotecaDbContext())
+            {
+                var modificarDniUsuario=contexto.Usuarios.FirstOrDefault(u=>u.id_usuario==idUsuario);
+
+                if (modificarDniUsuario != null)
+                {
+                    modificarDniUsuario.dni_usuario=nuevoDniUsuario;
+                    contexto.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado usuario con id:{0}",idUsuario);
+                }
+            }
+        }
+
+        public void modificarNombreUsuario(int idUsuario, string nuevoNombreUsuario)
+        {
+            using (var contexto = new gestorBibliotecaDbContext())
+            {
+                var modificarNombreUsuario = contexto.Usuarios.FirstOrDefault(u => u.id_usuario == idUsuario);
+
+                if (modificarNombreUsuario != null)
+                {
+                    modificarNombreUsuario.nombre_usuario = nuevoNombreUsuario;
+                    contexto.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado usuario con id:{0}", idUsuario);
+                }
+            }
+        }
+
+        public void modificarApellidosUsuario(int idUsuario, string nuevoApellidosUsuario)
+        {
+            using (var contexto = new gestorBibliotecaDbContext())
+            {
+                var modificarApellidosUsuario = contexto.Usuarios.FirstOrDefault(u => u.id_usuario == idUsuario);
+
+                if (modificarApellidosUsuario != null)
+                {
+                    modificarApellidosUsuario.apellidos_usuario = nuevoApellidosUsuario;
+                    contexto.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado usuario con id:{0}", idUsuario);
+                }
+            }
+        }
+
+        public void modificarTlfUsuario(int idUsuario, string nuevoTlfUsuario)
+        {
+            using (var contexto = new gestorBibliotecaDbContext())
+            {
+                var modificarTlfUsuario = contexto.Usuarios.FirstOrDefault(u => u.id_usuario == idUsuario);
+
+                if (modificarTlfUsuario != null)
+                {
+                    modificarTlfUsuario.tlf_usuario = nuevoTlfUsuario;
+                    contexto.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado usuario con id:{0}", idUsuario);
+                }
+            }
+        }
+
+        public void modificarClaveUsuario(int idUsuario, string nuevaClaveUsuario)
+        {
+            using (var contexto = new gestorBibliotecaDbContext())
+            {
+                var modificarClaveUsuario = contexto.Usuarios.FirstOrDefault(u => u.id_usuario == idUsuario);
+
+                if (modificarClaveUsuario != null)
+                {
+                    modificarClaveUsuario.clave_usuario = nuevaClaveUsuario;
+                    contexto.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado usuario con id:{0}", idUsuario);
+                }
+            }
+        }
+
+        public void modificarEstaBloqueadoUsuario(int idUsuario, bool nuevoBloqueoUsuario)
+        {
+            using (var contexto = new gestorBibliotecaDbContext())
+            {
+                var modificarEstaBloqueadoUsuario = contexto.Usuarios.FirstOrDefault(u => u.id_usuario == idUsuario);
+
+                if (modificarEstaBloqueadoUsuario != null)
+                {
+                    modificarEstaBloqueadoUsuario.estaBloqueado_usuario = nuevoBloqueoUsuario;
+                    contexto.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado usuario con id:{0}", idUsuario);
+                }
+            }
         }
         #endregion
 
@@ -484,15 +896,83 @@ namespace DAL
 
         public void borrarAccesoPorId(int idAcceso)
         {
-            throw new NotImplementedException();
+            using (var contexto = new gestorBibliotecaDbContext())
+            {
+                var accesoIdEliminar = contexto.Accesos.SingleOrDefault(a => a.id_acceso == idAcceso);
+
+                if (accesoIdEliminar != null)
+                {
+                    contexto.Accesos.Remove(accesoIdEliminar);
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\tAcceso eliminado correctamente");
+
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado el idAcceso:{0}",idAcceso);
+                }
+            }
+
         }
 
         public List<Accesos> listaAccesos()
         {
-            throw new NotImplementedException();
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var listaAccesos = contexto.Accesos.ToList();
+
+                if (listaAccesos.Count == 0)
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado ningun acceso");
+                }
+                else
+                {
+                    foreach(var accesos in listaAccesos)
+                    {
+                        Console.WriteLine("\n\n\t{0} {1} {2}",accesos.id_acceso,accesos.codigo_acceso,accesos.descripcion_acceso);
+                    }
+                }
+
+                return listaAccesos;
+            }
         }
 
-       
+        public void modificarCodigoAcceso(int idAcceso,string nuevoCodigoAcceso)
+        {
+            using(var contexto = new gestorBibliotecaDbContext())
+            {
+                var codigoAccesoModificar=contexto.Accesos.FirstOrDefault(c=>c.id_acceso==idAcceso);
+                if (codigoAccesoModificar != null)
+                {
+                    codigoAccesoModificar.codigo_acceso = nuevoCodigoAcceso;
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\tCodigo acceso actualizado");
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado el idAcceso:{0}",idAcceso);
+                }
+            }
+        }
+        public void modificarDescripcionAcceso(int idAcceso,string nuevaDescripcionAcceso)
+        {
+            using (var contexto = new gestorBibliotecaDbContext())
+            {
+                var descripcionAccesoModificar = contexto.Accesos.FirstOrDefault(c => c.id_acceso == idAcceso);
+                if (descripcionAccesoModificar != null)
+                {
+                    descripcionAccesoModificar.descripcion_acceso = nuevaDescripcionAcceso;
+                    contexto.SaveChanges();
+                    Console.WriteLine("\n\n\tDescripcion acceso actualizado");
+                }
+                else
+                {
+                    Console.WriteLine("\n\n\tNo se ha encontrado el idAcceso:{0}", idAcceso);
+                }
+            }
+        }
+
+        
         #endregion
 
 

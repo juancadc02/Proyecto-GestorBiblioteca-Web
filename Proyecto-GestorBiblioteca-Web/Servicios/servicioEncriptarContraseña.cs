@@ -9,7 +9,7 @@ namespace DAL.Servicios
     /// <summary>
     /// Interfaz que define el metodo de encriptar contraseña
     /// </summary>
-    internal interface servicioEncriptarContraseña
+    public interface servicioEncriptarContraseña
     {
         /// <summary>
         /// Interfaz del metodo encargado de encriptar la contrasela

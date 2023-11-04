@@ -1,5 +1,6 @@
 ﻿using DAL;
 using DAL.Modelo;
+using DAL.Servicios;
 using Microsoft.AspNetCore.Mvc;
 using Proyecto_GestorBiblioteca_Web.Models;
 using System.Diagnostics;
@@ -13,15 +14,22 @@ namespace Proyecto_GestorBiblioteca_Web.Controllers
         private readonly ILogger<HomeController> _logger;
 
         private readonly servicioConsultasImpl servicioConsultas;
+        private readonly servicioEncriptarContraseñaImpl servicioEncriptarContraseña;
         public HomeController(ILogger<HomeController> logger)
         {
+            servicioEncriptarContraseña = new servicioEncriptarContraseñaImpl();
             servicioConsultas = new servicioConsultasImpl();
+
+
+            
 
             //PRUEBA CRUD AUTORES
             //Autores nuevoAutor = new Autores("Juan Carlos", "Dorado");
             //servicioConsultas.insertarAutor(nuevoAutor);
             //servicioConsultas.listartAutores();
             //servicioConsultas.borrarAutorPorId(1);
+            //servicioConsultas.modificarNombreAutor(1, "NuevoNombre");
+            //servicioConsultas.modificarApellidosAutor(1, "NuevoApellido");
 
             //PRUEBA  LIBRO
             //Autores autor = new Autores();
@@ -51,13 +59,14 @@ namespace Proyecto_GestorBiblioteca_Web.Controllers
 
 
             //PRUEBA CRUD PRESTAMO
-            List<Libros> listaLibro = new List<Libros>();   
-            DateTime fch_inicio_prestamo = DateTime.Now.ToUniversalTime(); 
-            DateTime fch_fin_prestamo = DateTime.Now.ToUniversalTime(); 
-            DateTime fch_entrega_prestamo = DateTime.Now.ToUniversalTime(); 
-            Prestamos nuevoPrestamos = new Prestamos(1, 1,fch_inicio_prestamo,fch_fin_prestamo,fch_entrega_prestamo,1,listaLibro);
-            servicioConsultas.insertarPrestamos(nuevoPrestamos, 1);
-            servicioConsultas.listaPrestamos();
+            //List<Libros> listaLibro = new List<Libros>();   
+            //DateTime fch_inicio_prestamo = DateTime.Now.ToUniversalTime(); 
+            //DateTime fch_fin_prestamo = DateTime.Now.ToUniversalTime(); 
+            //DateTime fch_entrega_prestamo = DateTime.Now.ToUniversalTime(); 
+            //Prestamos nuevoPrestamos = new Prestamos(1, 1,fch_inicio_prestamo,fch_fin_prestamo,fch_entrega_prestamo,1,listaLibro);
+            //servicioConsultas.insertarPrestamos(nuevoPrestamos, 1);
+            //
+            //servicioConsultas.listaPrestamos();
 
 
             //PRUEBA CRUD ESTADO_PRESTAMO
@@ -65,14 +74,16 @@ namespace Proyecto_GestorBiblioteca_Web.Controllers
             //servicioConsultas.insertarEstadoPrestamo(nuevoEstado);
 
             //PRUEBA CRUD USUARIO
-            //DateTime fch_fin_bloqueo_usuario = DateTime.Now.ToUniversalTime(); 
-            //DateTime fch_alta_usuario = DateTime.Now.ToUniversalTime(); 
-            //DateTime fch_baja_usuario = DateTime.Now.ToUniversalTime();
-            //Usuarios nuevoUsuario = new Usuarios("29533625S","Juan Carlos","Dorado Castro","658257359","juancarlosdorado02c@gmail.com","123",1,true, fch_fin_bloqueo_usuario, fch_alta_usuario, fch_baja_usuario);
-            //servicioConsultas.insertarUsuario(nuevoUsuario);
+            DateTime fch_fin_bloqueo_usuario = DateTime.Now.ToUniversalTime(); 
+            DateTime fch_alta_usuario = DateTime.Now.ToUniversalTime(); 
+            DateTime fch_baja_usuario = DateTime.Now.ToUniversalTime();
+            string contraseñaEncriptada = servicioEncriptarContraseña.EncriptarContraseña("Hola");
+            Usuarios nuevoUsuario = new Usuarios("29533625S","Juan Carlos","Dorado Castro","658257359","juancarlosdorado02c@gmail.com", contraseñaEncriptada, 1,true, fch_fin_bloqueo_usuario, fch_alta_usuario, fch_baja_usuario);
+            servicioConsultas.insertarUsuario(nuevoUsuario);
             //PRUEBA CRUD ACCESO
             //Accesos nuevoAcceso = new Accesos("ac", "Aceptado");
             //servicioConsultas.insertarAccesos(nuevoAcceso);
+
 
 
 

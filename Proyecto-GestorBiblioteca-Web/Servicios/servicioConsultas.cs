@@ -32,6 +32,10 @@ namespace DAL
         /// Interfaz del metodo que modifica el nombre del autor a traves de su id.
         /// </summary>
         public void modificarNombreAutor(int idAutor,string nuevoNombre);
+        /// <summary>
+        /// Interfaz del metodo que modifica el apellido del autor a traves de su id.
+        /// </summary>
+        public void modificarApellidosAutor(int idAutor, string nuevoApellidos);
         #endregion
 
 
@@ -56,7 +60,19 @@ namespace DAL
         /// </summary>
         /// <param name="idLibro"></param>
         public void borrarLibroPorId(int idLibro);
-
+        /// <summary>
+        /// Interfaz del metodo que modifica el isbn del libro a traves de su id.
+        /// </summary>
+        public void modificarIsbnLibro(int idLibro,string nuevoIsbn);
+        /// <summary>
+        /// Interfaz del metodo que modifica el titulo del libro a traves de su id.
+        /// </summary>
+        public void modificarTituloLibro(int idLibro, string nuevoTitulo);
+        /// <summary>
+        /// Interfaz del metodo que modifica la edicion del libro a traves de su id.
+        /// </summary>
+        public void modificarEdicionLibro(int idLibro, string nuevaEdicion);
+  
         #endregion
 
         #region CRUD EDITORIALES
@@ -77,6 +93,10 @@ namespace DAL
         /// </summary>
         /// <returns>Devuelve el listado de editoriales</returns>
         public List<Editoriales> listarEditoriales();
+        /// <summary>
+        /// Interfaz del metodo que modifica el nombre de la editorial a traves de su id.
+        /// </summary>
+        public void modificarNombreEditorial(int idEditorial, string nuevoNombreEditorial);
         #endregion
 
         #region CRUD GENEROS
@@ -97,6 +117,14 @@ namespace DAL
         /// </summary>
         /// <returns>Devuelve el listado de generos</returns>
         public List<Generos> listarGeneros();
+        /// <summary>
+        /// Interfaz del metodo que modifica el nombre del genero a traves de su id.
+        /// </summary>
+        public void modificarNombreGenero(int idGenero,string nuevoNombreGenero);
+        /// <summary>
+        /// Interfaz del metodo que modifica la descripcion del genero a traves de su id.
+        /// </summary>
+        public void modificarDescripcionGenero(int idGenero, string nuevoNombreDescripcionGenero);
         #endregion
 
         #region CRUD COLECCIONES
@@ -117,6 +145,11 @@ namespace DAL
         /// </summary>
         /// <returns>Devuelve el listado de colecciones</returns>
         public List<Colecciones> listaColecciones();
+
+        /// <summary>
+        /// Interfaz del metodo que modifica el nombre de la coleccion a traves de su id.
+        /// </summary>
+        public void modificarNombreColeccion(int idColeccion, string nuevoNombreColeccion);
         #endregion
         #region CRUD PRESTAMOS
         /// <summary>
@@ -138,7 +171,18 @@ namespace DAL
         /// </summary>
         /// <returns>Devuelve el listado de prestamos</returns>
         public List<Prestamos> listaPrestamos();
-
+        /// <summary>
+        /// Interfaz del metodo que modifica la fecha inicio del prestamo a traves de su id.
+        /// </summary>
+        public void modificarFchInicioPrestamo(int idPrestamo, DateTime nuevaFechaInicioPrestamo);
+        /// <summary>
+        /// Interfaz del metodo que modifica la fecha fin del prestamo a traves de su id.
+        /// </summary>
+        public void modificarFchFinPrestamo(int idPrestamo,DateTime nuevaFchFinPrestamo);
+        /// <summary>
+        /// Interfaz del metodo que modifica la fecha entrega del prestamo a traves de su id.
+        /// </summary>
+        public void modificarFchEntregaPrestamo(int idPrestamo, DateTime nuevaFchEntregaPrestamo);
         #endregion
 
         #region CRUD ESTADO_PRESTAMO
@@ -160,7 +204,14 @@ namespace DAL
         /// </summary>
         /// <returns>Devulve listad de estado</returns>
         public List<Estamos_Prestamo> listaEstadoPrestamo();
-
+        /// <summary>
+        /// Interfaz del metodo que modifica el codigo del estado prestamo a traves de su id.
+        /// </summary>
+        public void modificarCodigoPrestamo(int idEstadoPrestamo, int nuevocodigoEstadoPrestamo);
+        /// <summary>
+        /// Interfaz del metodo que modifica la la descripcion del estado prestamo a traves de su id.
+        /// </summary>
+        public void modificarDescripcionEstadoPrestamo(int idEstadoPrestamo, string nuevaDescripcionEstadoPrestamo);
         #endregion
 
         #region CRUD USUARIOS
@@ -181,6 +232,30 @@ namespace DAL
         /// </summary>
         /// <returns>Devuelve listado de usuarios</returns>
         public List<Usuarios> listaUsuarios();
+        /// <summary>
+        /// Interfaz del metodo que modifica el dni del usuario a traves de su id.
+        /// </summary>
+        public void modificarDniUsuario(int idUsuario,string nuevoDniUsuario);
+        /// <summary>
+        /// Interfaz del metodo que modifica el nombre del usuario a traves de su id.
+        /// </summary>
+        public void modificarNombreUsuario(int idUsuario, string nuevoNombreUsuario);
+        /// <summary>
+        /// Interfaz del metodo que modifica el apellido del usuario a traves de su id.
+        /// </summary>
+        public void modificarApellidosUsuario(int idUsuario, string nuevoApellidosUsuario);
+        /// <summary>
+        /// Interfaz del metodo que modifica el tlf del usuario a traves de su id.
+        /// </summary>
+        public void modificarTlfUsuario(int idUsuario,string nuevoTlfUsuario);
+        /// <summary>
+        /// Interfaz del metodo que modifica la clave del usuario a traves de su id.
+        /// </summary>
+        public void modificarClaveUsuario(int idUsuario, string nuevaClaveUsuario);
+        /// <summary>
+        /// Interfaz del metodo que modifica el estado del usuario a traves de su id.
+        /// </summary>
+        public void modificarEstaBloqueadoUsuario(int idUsuario,bool nuevoBloqueoUsuario);
         #endregion
 
         #region CRUD ACCESOS
@@ -202,6 +277,14 @@ namespace DAL
         /// </summary>
         /// <returns>Devuelve listado de acceso</returns>
         public List<Accesos> listaAccesos();
+        /// <summary>
+        /// Interfaz del metodo que modifica el codigo acceso a traves de su id.
+        /// </summary>
+        public void modificarCodigoAcceso(int idAcceso, string nuevoCodigoAcceso);
+        /// <summary>
+        /// Interfaz del metodo que modifica la descripcion acceso a traves de su id.
+        /// </summary>
+        public void modificarDescripcionAcceso(int idAcceso, string nuevaDescripcionAcceso);
         #endregion
     }
 

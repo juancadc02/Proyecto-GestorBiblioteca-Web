@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Servicios
 {
-    internal class servicioEncriptarContraseñaImpl : servicioEncriptarContraseña
+    public class servicioEncriptarContraseñaImpl : servicioEncriptarContraseña
     {
         public string EncriptarContraseña(string contraseña)
         {
