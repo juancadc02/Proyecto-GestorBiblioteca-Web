@@ -2,8 +2,10 @@
 using DAL.Modelo;
 using DAL.Servicios;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Proyecto_GestorBiblioteca_Web.Models;
 using System.Diagnostics;
+using System.Net;
 using System.Runtime.CompilerServices;
 
 namespace Proyecto_GestorBiblioteca_Web.Controllers
@@ -21,7 +23,7 @@ namespace Proyecto_GestorBiblioteca_Web.Controllers
             servicioConsultas = new servicioConsultasImpl();
 
 
-            
+
 
             //PRUEBA CRUD AUTORES
             //Autores nuevoAutor = new Autores("Juan Carlos", "Dorado");
@@ -74,18 +76,46 @@ namespace Proyecto_GestorBiblioteca_Web.Controllers
             //servicioConsultas.insertarEstadoPrestamo(nuevoEstado);
 
             //PRUEBA CRUD USUARIO
-            DateTime fch_fin_bloqueo_usuario = DateTime.Now.ToUniversalTime(); 
-            DateTime fch_alta_usuario = DateTime.Now.ToUniversalTime(); 
-            DateTime fch_baja_usuario = DateTime.Now.ToUniversalTime();
-            string contraseñaEncriptada = servicioEncriptarContraseña.EncriptarContraseña("Hola");
-            Usuarios nuevoUsuario = new Usuarios("29533625S","Juan Carlos","Dorado Castro","658257359","juancarlosdorado02c@gmail.com", contraseñaEncriptada, 1,true, fch_fin_bloqueo_usuario, fch_alta_usuario, fch_baja_usuario);
-            servicioConsultas.insertarUsuario(nuevoUsuario);
+            //DateTime fch_fin_bloqueo_usuario = DateTime.Now.ToUniversalTime(); 
+            //DateTime fch_alta_usuario = DateTime.Now.ToUniversalTime(); 
+            //DateTime fch_baja_usuario = DateTime.Now.ToUniversalTime();
+            //string contraseñaEncriptada = servicioEncriptarContraseña.EncriptarContraseña("Hola");
+            //Usuarios nuevoUsuario = new Usuarios("29533625S","Juan Carlos","Dorado Castro","658257359","juancarlosdorado02c@gmail.com", contraseñaEncriptada, 1,true, fch_fin_bloqueo_usuario, fch_alta_usuario, fch_baja_usuario);
+            //servicioConsultas.insertarUsuario(nuevoUsuario);
             //PRUEBA CRUD ACCESO
             //Accesos nuevoAcceso = new Accesos("ac", "Aceptado");
             //servicioConsultas.insertarAccesos(nuevoAcceso);
 
+            string apiUrl = "https://localhost:7268/api/ControladorUsuarios";
 
+          
 
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    // Realiza una solicitud GET a la API y obtén la respuesta como una cadena JSON
+                    string jsonResponse = client.DownloadString(apiUrl);
+
+                    // Deserializa los datos JSON en una lista de objetos Usuario
+                    Usuarios[] usuarios = JsonConvert.DeserializeObject<Usuarios[]>(jsonResponse);
+
+                    // Muestra los datos de usuarios en el formato deseado
+                    foreach (Usuarios usuario in usuarios)
+                    {
+                        Console.WriteLine("Id: " + usuario.id_usuario);
+                        Console.WriteLine("Nombre: " + usuario.nombre_usuario);
+                        Console.WriteLine("Apellidos: " + usuario.apellidos_usuario);
+                        Console.WriteLine("Correo: " + usuario.email_usuario);
+                        Console.WriteLine("Dni: " + usuario.dni_usuario);
+                        Console.WriteLine("Telefono: " + usuario.tlf_usuario);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
 
             _logger = logger;
         }
