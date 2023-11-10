@@ -1,7 +1,9 @@
 ﻿using DAL.Modelo;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,7 +33,7 @@ namespace DAL
         /// <summary>
         /// Interfaz del metodo que modifica el nombre del autor a traves de su id.
         /// </summary>
-        public void modificarNombreAutor(int idAutor,string nuevoNombre);
+        public void modificarNombreAutor(int idAutor, string nuevoNombre);
         /// <summary>
         /// Interfaz del metodo que modifica el apellido del autor a traves de su id.
         /// </summary>
@@ -48,7 +50,7 @@ namespace DAL
         /// </summary>
         /// <param name="nuevoLibro"></param>
         /// <param name="idAutor"></param>
-        public void insertarLibro(Libros nuevoLibro,int idAutor);
+        public void insertarLibro(Libros nuevoLibro, int idAutor);
         /// <summary>
         /// Interfaz del metodo que devuelve el listado de libros de la base de datos.
         /// </summary>
@@ -63,7 +65,7 @@ namespace DAL
         /// <summary>
         /// Interfaz del metodo que modifica el isbn del libro a traves de su id.
         /// </summary>
-        public void modificarIsbnLibro(int idLibro,string nuevoIsbn);
+        public void modificarIsbnLibro(int idLibro, string nuevoIsbn);
         /// <summary>
         /// Interfaz del metodo que modifica el titulo del libro a traves de su id.
         /// </summary>
@@ -72,7 +74,7 @@ namespace DAL
         /// Interfaz del metodo que modifica la edicion del libro a traves de su id.
         /// </summary>
         public void modificarEdicionLibro(int idLibro, string nuevaEdicion);
-  
+
         #endregion
 
         #region CRUD EDITORIALES
@@ -120,7 +122,7 @@ namespace DAL
         /// <summary>
         /// Interfaz del metodo que modifica el nombre del genero a traves de su id.
         /// </summary>
-        public void modificarNombreGenero(int idGenero,string nuevoNombreGenero);
+        public void modificarNombreGenero(int idGenero, string nuevoNombreGenero);
         /// <summary>
         /// Interfaz del metodo que modifica la descripcion del genero a traves de su id.
         /// </summary>
@@ -178,7 +180,7 @@ namespace DAL
         /// <summary>
         /// Interfaz del metodo que modifica la fecha fin del prestamo a traves de su id.
         /// </summary>
-        public void modificarFchFinPrestamo(int idPrestamo,DateTime nuevaFchFinPrestamo);
+        public void modificarFchFinPrestamo(int idPrestamo, DateTime nuevaFchFinPrestamo);
         /// <summary>
         /// Interfaz del metodo que modifica la fecha entrega del prestamo a traves de su id.
         /// </summary>
@@ -235,7 +237,7 @@ namespace DAL
         /// <summary>
         /// Interfaz del metodo que modifica el dni del usuario a traves de su id.
         /// </summary>
-        public void modificarDniUsuario(int idUsuario,string nuevoDniUsuario);
+        public void modificarDniUsuario(int idUsuario, string nuevoDniUsuario);
         /// <summary>
         /// Interfaz del metodo que modifica el nombre del usuario a traves de su id.
         /// </summary>
@@ -247,7 +249,7 @@ namespace DAL
         /// <summary>
         /// Interfaz del metodo que modifica el tlf del usuario a traves de su id.
         /// </summary>
-        public void modificarTlfUsuario(int idUsuario,string nuevoTlfUsuario);
+        public void modificarTlfUsuario(int idUsuario, string nuevoTlfUsuario);
         /// <summary>
         /// Interfaz del metodo que modifica la clave del usuario a traves de su id.
         /// </summary>
@@ -255,7 +257,7 @@ namespace DAL
         /// <summary>
         /// Interfaz del metodo que modifica el estado del usuario a traves de su id.
         /// </summary>
-        public void modificarEstaBloqueadoUsuario(int idUsuario,bool nuevoBloqueoUsuario);
+        public void modificarEstaBloqueadoUsuario(int idUsuario, bool nuevoBloqueoUsuario);
         #endregion
 
         #region CRUD ACCESOS
@@ -286,6 +288,13 @@ namespace DAL
         /// </summary>
         public void modificarDescripcionAcceso(int idAcceso, string nuevaDescripcionAcceso);
         #endregion
+
+
+        public void listadoUsuariosApi(string url);
+        public void listadoAccesoApi(string url);
+
+        public bool loginUsuario(string username, string contraseña, string urlApi);
+
     }
 
 

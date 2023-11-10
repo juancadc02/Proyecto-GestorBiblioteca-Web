@@ -1,8 +1,10 @@
 ﻿using DAL.Modelo;
 using Microsoft.AspNetCore.Mvc.ViewFeatures.Buffers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -972,12 +974,94 @@ namespace DAL
             }
         }
 
-        
+
         #endregion
+        public void listadoAccesoApi(string url)
+        {
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    // Realiza una solicitud GET a la API y obtén la respuesta como una cadena JSON
+                    string jsonResponse = client.DownloadString(url);
+
+                    // Deserializa los datos JSON en una lista de objetos Usuario
+                    Accesos[] accesos = JsonConvert.DeserializeObject<Accesos[]>(jsonResponse);
+
+                    // Muestra los datos de usuarios en el formato deseado
+                    foreach (Accesos acceso in accesos)
+                    {
+                        Console.WriteLine("Id: " + acceso.id_acceso);
+                        Console.WriteLine("Codigo: " + acceso.codigo_acceso);
+                        Console.WriteLine("Descripcion: " + acceso.descripcion_acceso);
 
 
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+        }
+        public void listadoUsuariosApi(string url)
+        {
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    // Realiza una solicitud GET a la API y obtén la respuesta como una cadena JSON
+                    string jsonResponse = client.DownloadString(url);
+
+                    // Deserializa los datos JSON en una lista de objetos Usuario
+                    Usuarios[] usuarios = JsonConvert.DeserializeObject<Usuarios[]>(jsonResponse);
+
+                    // Muestra los datos de usuarios en el formato deseado
+                    foreach (Usuarios usuario in usuarios)
+                    {
+                        Console.WriteLine("Id: " + usuario.id_usuario);
+                        Console.WriteLine("Nombre: " + usuario.nombre_usuario);
+                        Console.WriteLine("Apellidos: " + usuario.apellidos_usuario);
+                        Console.WriteLine("Correo: " + usuario.email_usuario);
+                        Console.WriteLine("Dni: " + usuario.dni_usuario);
+                        Console.WriteLine("Telefono: " + usuario.tlf_usuario);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+        }
+
+        public bool loginUsuario(string username, string contraseña,string urlApi)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                string apiUrl = urlApi;
+                // Construir el endpoint para la solicitud, incluyendo el nombre de usuario y la contraseña proporcionados
+                string endpoint = $"/auth?username={username}&password={contraseña}";
+
+                // Realizar una solicitud GET a la API concatenando la URL de la API y el endpoint
+                HttpResponseMessage response = client.GetAsync(apiUrl + endpoint).Result;
+
+                // Verificar si la solicitud fue exitosa (código de estado HTTP 200)
+                if (response.IsSuccessStatusCode)
+                {
+                    // Leer el cuerpo de la respuesta como una cadena
+                    string responseBody = response.Content.ReadAsStringAsync().Result;
+                    // Interpretar la respuesta (en este caso, la API devuelve "true" si las credenciales son correctas)
+                    return responseBody.ToLower() == "true"; // Ejemplo: la API devuelve "true" si las credenciales son correctas
+                }
+                else
+                {
+                    // Si la solicitud no fue exitosa, devolver false (autenticación fallida)
+                    return false;
+                }
+            }
 
 
+        }
 
 
     }

@@ -14,6 +14,9 @@ namespace Proyecto_GestorBiblioteca_Web.Controllers
 
     {
         private readonly ILogger<HomeController> _logger;
+        const string URLAPIUSUARIOS = "https://localhost:7268/api/ControladorUsuarios";
+        const string URLAPIACCESOS = "https://localhost:7268/api/ControladorAccesos";
+
 
         private readonly servicioConsultasImpl servicioConsultas;
         private readonly servicioEncriptarContraseñaImpl servicioEncriptarContraseña;
@@ -77,6 +80,7 @@ namespace Proyecto_GestorBiblioteca_Web.Controllers
 
             //PRUEBA CRUD USUARIO
             //DateTime fch_fin_bloqueo_usuario = DateTime.Now.ToUniversalTime(); 
+            
             //DateTime fch_alta_usuario = DateTime.Now.ToUniversalTime(); 
             //DateTime fch_baja_usuario = DateTime.Now.ToUniversalTime();
             //string contraseñaEncriptada = servicioEncriptarContraseña.EncriptarContraseña("Hola");
@@ -86,36 +90,20 @@ namespace Proyecto_GestorBiblioteca_Web.Controllers
             //Accesos nuevoAcceso = new Accesos("ac", "Aceptado");
             //servicioConsultas.insertarAccesos(nuevoAcceso);
 
-            string apiUrl = "https://localhost:7268/api/ControladorUsuarios";
 
-          
 
-            try
-            {
-                using (WebClient client = new WebClient())
-                {
-                    // Realiza una solicitud GET a la API y obtén la respuesta como una cadena JSON
-                    string jsonResponse = client.DownloadString(apiUrl);
+            //Probamos listado usuarios api
+            Console.Write("\n\n\tIntroduce el usuario:");
+            string usuario = Console.ReadLine();
 
-                    // Deserializa los datos JSON en una lista de objetos Usuario
-                    Usuarios[] usuarios = JsonConvert.DeserializeObject<Usuarios[]>(jsonResponse);
+            Console.WriteLine("\n\n\tIntroduce la contraseña");
+            string contraseñaUsuarios = Console.ReadLine();
+            servicioEncriptarContraseña.EncriptarContraseña(contraseñaUsuarios);
 
-                    // Muestra los datos de usuarios en el formato deseado
-                    foreach (Usuarios usuario in usuarios)
-                    {
-                        Console.WriteLine("Id: " + usuario.id_usuario);
-                        Console.WriteLine("Nombre: " + usuario.nombre_usuario);
-                        Console.WriteLine("Apellidos: " + usuario.apellidos_usuario);
-                        Console.WriteLine("Correo: " + usuario.email_usuario);
-                        Console.WriteLine("Dni: " + usuario.dni_usuario);
-                        Console.WriteLine("Telefono: " + usuario.tlf_usuario);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error: " + ex.Message);
-            }
+            servicioConsultas.loginUsuario(usuario, contraseñaUsuarios, URLAPIUSUARIOS);
+
+
+
 
             _logger = logger;
         }
