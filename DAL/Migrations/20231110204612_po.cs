@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class de : Migration
+    public partial class po : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -134,7 +134,8 @@ namespace DAL.Migrations
                     edicion_libro = table.Column<string>(type: "text", nullable: false),
                     id_editorial = table.Column<int>(type: "integer", nullable: false),
                     id_genero = table.Column<int>(type: "integer", nullable: false),
-                    id_coleccion = table.Column<int>(type: "integer", nullable: false)
+                    id_coleccion = table.Column<int>(type: "integer", nullable: false),
+                    imagen_libro = table.Column<byte[]>(type: "bytea", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -16,7 +16,7 @@ namespace DAL.Modelo
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int id_libro {  get; set; }
+        public int id_libro { get; set; }
         public string isbn_libro { get; set; }
         public string nombre_libro { get; set; }
         public string edicion_libro { get; set; }
@@ -25,20 +25,20 @@ namespace DAL.Modelo
         [ForeignKey("Generos")]
         public int id_genero { get; set; }
         [ForeignKey("Colecciones")]
-        public int id_coleccion {  get; set; }
+        public int id_coleccion { get; set; }
+
+        public byte[] imagen_libro { get; set; }
 
 
-       
 
 
-        
         public ICollection<Autores> Autores { get; set; }
 
 
         public ICollection<Prestamos> Prestamos { get; set; }
         public Editoriales Editoriales { get; set; }
         public Generos Generos { get; set; }
-        public Colecciones Colecciones { get; set;}
+        public Colecciones Colecciones { get; set; }
 
         public Libros(int id_libro, string isbn_libro, string nombre_libro, string edicion_libro, int id_editorial, int id_genero, int id_coleccion, ICollection<Autores> autores, Editoriales editoriales, Generos generos, Colecciones colecciones)
         {
@@ -55,7 +55,7 @@ namespace DAL.Modelo
             Colecciones = colecciones;
         }
 
-        public Libros(string isbn_libro, string nombre_libro, string edicion_libro, int id_editorial, int id_genero, int id_coleccion)
+        public Libros(string isbn_libro, string nombre_libro, string edicion_libro, int id_editorial, int id_genero, int id_coleccion, byte[] imagen_libro)
         {
             this.isbn_libro = isbn_libro;
             this.nombre_libro = nombre_libro;
@@ -63,12 +63,8 @@ namespace DAL.Modelo
             this.id_editorial = id_editorial;
             this.id_genero = id_genero;
             this.id_coleccion = id_coleccion;
+            this.imagen_libro = imagen_libro;
         }
 
-        public Libros(string isbn_libro, string nombre_libro, string edicion_libro, int id_editorial, int id_genero, int id_coleccion, ICollection<Autores> autores) :
-            this(isbn_libro, nombre_libro, edicion_libro, id_editorial, id_genero, id_coleccion)
-        {
-            Autores = autores;
-        }
     }
 }

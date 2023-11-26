@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DAL.Migrations
 {
     [DbContext(typeof(gestorBibliotecaDbContext))]
-    [Migration("20231103184516_de")]
-    partial class de
+    [Migration("20231110204612_po")]
+    partial class po
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -177,6 +177,10 @@ namespace DAL.Migrations
 
                     b.Property<int>("id_genero")
                         .HasColumnType("integer");
+
+                    b.Property<byte[]>("imagen_libro")
+                        .IsRequired()
+                        .HasColumnType("bytea");
 
                     b.Property<string>("isbn_libro")
                         .IsRequired()

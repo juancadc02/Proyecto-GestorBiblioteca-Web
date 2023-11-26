@@ -2,6 +2,7 @@
 using DAL.Modelo;
 using DAL.Servicios;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Proyecto_GestorBiblioteca_Web.Models;
 using System.Diagnostics;
@@ -13,6 +14,7 @@ namespace Proyecto_GestorBiblioteca_Web.Controllers
     public class HomeController : Controller
 
     {
+        private readonly gestorBibliotecaDbContext _context;
         private readonly ILogger<HomeController> _logger;
         const string URLAPIUSUARIOS = "https://localhost:7268/api/ControladorUsuarios";
         const string URLAPIACCESOS = "https://localhost:7268/api/ControladorAccesos";
@@ -20,7 +22,7 @@ namespace Proyecto_GestorBiblioteca_Web.Controllers
 
         private readonly servicioConsultasImpl servicioConsultas;
         private readonly servicioEncriptarContraseñaImpl servicioEncriptarContraseña;
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,gestorBibliotecaDbContext contex)
         {
             servicioEncriptarContraseña = new servicioEncriptarContraseñaImpl();
             servicioConsultas = new servicioConsultasImpl();
@@ -106,10 +108,31 @@ namespace Proyecto_GestorBiblioteca_Web.Controllers
 
 
             _logger = logger;
+            _context = contex;
         }
 
-        public IActionResult Index()
+        public ActionResult CargarConImagen(Libros libro, IFormFile ImagenPortada)
         {
+            if (ModelState.IsValid)
+            {
+                if (ImagenPortada != null && ImagenPortada.Length > 0)
+                {
+                    byte[] imagenBytes;
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        ImagenPortada.CopyTo(memoryStream);
+                        imagenBytes = memoryStream.ToArray();
+                    }
+
+                    libro.imagen_libro = imagenBytes;
+                }
+
+                _context.Libros.Add(libro);
+                _context.SaveChanges();
+
+                return View();
+            }
+
             return View();
         }
 

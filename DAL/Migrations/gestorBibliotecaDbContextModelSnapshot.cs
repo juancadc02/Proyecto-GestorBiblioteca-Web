@@ -175,6 +175,10 @@ namespace DAL.Migrations
                     b.Property<int>("id_genero")
                         .HasColumnType("integer");
 
+                    b.Property<byte[]>("imagen_libro")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
                     b.Property<string>("isbn_libro")
                         .IsRequired()
                         .HasColumnType("text");
